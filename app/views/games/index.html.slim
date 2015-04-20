@@ -1,0 +1,38 @@
+div
+  | You have #{@player.money} coins
+
+
+
+-if @player.game
+  -if @player.game.finished
+    -if @player.game.prizes > 0
+      div
+        | You win #{@player.game.prizes} coins
+
+    div
+      | Dealer: 
+      - @player.game.dealer.cards.each do |card|
+       |  #{card.symbol}&#{card.suit}; 
+  -else
+    div
+      | Dealer: #{@player.game.dealer.cards.first.symbol}&#{@player.game.dealer.cards.first.suit}; ?
+  div
+    | You: 
+    - @player.game.hands.each_with_index do |hand, index|
+    	br
+    	| (bet #{hand.bet} coins) 
+    	- hand.cards.each do |card|
+     		| #{card.symbol}&#{card.suit}; 
+     	- if hand.busted?
+     	  b
+     	    | busted
+     	div = render partial: "actions", locals: {hand: hand, index: index }  if hand.canplay
+
+
+- if !@player.game || @player.game.finished
+	= form_tag(new_game_path, method: "get") do
+	  = label_tag(:bet, "Bet:")
+	  = text_field_tag(:bet) 
+	  = submit_tag("New game")
+	= link_to "Reset player", reset_player_games_path
+    

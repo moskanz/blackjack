@@ -1,0 +1,5 @@
+.btn-group
+	= link_to "One more", onemore_games_path(index: index), method: :post, class: "btn btn-primary"
+	= link_to "Doublebet", doublebet_games_path(index: index), method: :post, class: "btn btn-primary"
+	= link_to "Stay", stay_games_path(index: index), method: :post, class: "btn btn-primary"
+	= link_to "Split", split_games_path(index: index), method: :post, class: "btn btn-primary" if @player.cansplit?(hand)
